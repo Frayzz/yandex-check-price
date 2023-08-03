@@ -1,6 +1,6 @@
 <?php
-$clid = 'ak220315';
-$apikey = 'CVrUftwfwoEYOiCEFWwNHaVabjqPWhARDYmQzFb';
+$clid = clid;
+$apikey = APIKey;
 $class_str = 'express';
 
 $fromLonLat = '76.93361121975246,43.230385838927816';
