@@ -38,8 +38,10 @@ class YandexTaxiApiClient {
 try {
     $clid = 'your_clid_here';
     $apiKey = 'your_api_key_here';
+    // Тип запроса: Эконом, Бизнес, Курьер и.д
     $classStr = 'express';
 
+    // Координаты от и до
     $fromLonLat = '76.93361121975246,43.230385838927816';
     $toLonLat = '76.95132452808683,43.24996393218453';
 
@@ -49,6 +51,6 @@ try {
     // Вернуть результат запроса для дальнейшей обработки
     echo $response;
 } catch (Exception $e) {
-    echo "An error occurred: " . $e->getMessage();
+    echo "Произошла ошибка: " . $e->getMessage();
 }
 ?>
