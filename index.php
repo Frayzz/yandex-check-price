@@ -1,27 +1,54 @@
 <?php
-$clid = 'ak220315';
-$apikey = 'CVrUftwfwoEYOiCEFWwNHaVabjqPWhARDYmQzFb';
-$class_str = 'express';
+class YandexTaxiApiClient {
+    private $clid;
+    private $apiKey;
+    private $classStr;
 
-$fromLonLat = '76.93361121975246,43.230385838927816';
-$toLonLat = '76.95132452808683,43.24996393218453';
+    public function __construct($clid, $apiKey, $classStr) {
+        $this->clid = $clid;
+        $this->apiKey = $apiKey;
+        $this->classStr = $classStr;
+    }
 
-$url = 'https://taxi-routeinfo.taxi.yandex.net/taxi_info';
+    public function getRouteInfo($fromLonLat, $toLonLat) {
+        $url = 'https://taxi-routeinfo.taxi.yandex.net/taxi_info';
 
-$options = array(
-    'clid' => $clid,
-    'apikey' => $apikey,
-    'rll' => $fromLonLat.'~'.$toLonLat,
-    'class_str' => $class_str,
-);
+        $options = array(
+            'clid' => $this->clid,
+            'apikey' => $this->apiKey,
+            'rll' => $fromLonLat . '~' . $toLonLat,
+            'class_str' => $this->classStr,
+        );
 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_URL, $url.'?'.http_build_query($options));
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url . '?' . http_build_query($options));
 
-$responce = curl_exec($ch);
-curl_close($ch);
+        $response = curl_exec($ch);
+        curl_close($ch);
 
-echo '<pre>';
-print_r($responce);
-echo '</pre>';
+        if ($response === false) {
+            throw new Exception("Curl request failed: " . curl_error($ch));
+        }
+
+        return $response;
+    }
+}
+
+try {
+    $clid = 'your_clid_here';
+    $apiKey = 'your_api_key_here';
+    $classStr = 'express';
+
+    $fromLonLat = '76.93361121975246,43.230385838927816';
+    $toLonLat = '76.95132452808683,43.24996393218453';
+
+    $client = new YandexTaxiApiClient($clid, $apiKey, $classStr);
+    $response = $client->getRouteInfo($fromLonLat, $toLonLat);
+
+    // Вернуть результат запроса для дальнейшей обработки
+    echo $response;
+} catch (Exception $e) {
+    echo "An error occurred: " . $e->getMessage();
+}
+?>
